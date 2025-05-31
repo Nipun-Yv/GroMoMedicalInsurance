@@ -83,7 +83,7 @@ const ProductsPage = () => {
     <SelectedPolicyProvider>
       <div className="w-full h-[90%] flex bg-[linear-gradient(0deg,black,black,black,var(--primary),purple,rgb(90,0,90))]">
         <div className="flex-1 p-2 h-full bg-[linear-gradient(-135deg,black,black,var(--primary),rgb(90,0,90),purple)]">
-          <Assistant userId={userId}/>
+          <Assistant userId={userId} policies={policyList}/>
         </div>
         <div
           className="h-full flex w-min min-w-[1090px] bg-transparent flex-col overflow-y-scroll shadow-2xl z-30 shadow-black

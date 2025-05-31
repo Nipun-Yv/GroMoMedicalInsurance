@@ -35,13 +35,14 @@ import { Input } from "./ui/input"
 import { useSelectedPolicy } from "@/contexts/SelectedPolicyContext"
 import axios from "axios"
 import DiscountBox from "./DiscountBox"
+import { Policy } from "@/types/policy"
 
 type Message = {
   from: "user" | "bot"
   text: string
 }
 
-const SemanticSearch = ({userId}:{userId:string}) => {
+const SemanticSearch = ({userId,policies}:{userId:string,policies:Policy[]}) => {
   const [description, setDescription] = useState<string>("")
   const [showDiscounts,setShowDiscounts]=useState<boolean>(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -59,7 +60,8 @@ const SemanticSearch = ({userId}:{userId:string}) => {
 
     setMessages((prev) => [...prev, { from: "user", text: description }])
     setDescription("")
-    const {data}= await axios.post(`${baseUrl}/chat-message`,{user_id:userId,query:description,selected_pdf:selectedPolicy})
+    console.log(policies)
+    const {data}= await axios.post(`${baseUrl}/chat-message`,{user_id:userId,query:description,selected_pdf:selectedPolicy,policies_being_displayed_to_users:policies})
     if(data.tool_used=="fetch_discounts"){
       // setMessages((prev) => [...prev, { from: "bot", text: data.message }])
       setShowDiscounts(true)
