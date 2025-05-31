@@ -10,6 +10,13 @@ export interface CoverOption{
     two_year:number,
     three_year:number
 }
+export interface AddOn{
+  tier:number,
+  name:string,
+  id:number,
+  add_on_document_url:string
+  description:string
+}
 export interface Policy{
   id:number,
   name:string,
@@ -20,4 +27,5 @@ export interface Policy{
   insurance_provider_id:number,
   cover_options:CoverOption[],
   riders:Rider[]
+  add_ons:AddOn[]
 }

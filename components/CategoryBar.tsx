@@ -6,17 +6,16 @@ const CategoryBar = ({selected}:{selected:Category}) => {
       className="flex rounded-md h-full items-center shadow-md p-1 font-light border-1
     text-gray-600"
     >
-      <OptionDecorator category="coverage" selected={selected}/>
+      {/* <OptionDecorator category="coverage" selected={selected}/>
       <OptionDecorator category="pricing" selected={selected}/>
       <OptionDecorator category="models" selected={selected}/>
       <OptionDecorator category="custom" selected={selected}/>
-      <OptionDecorator category="any" selected={selected}/>
+      <OptionDecorator category="any" selected={selected}/> */}
     </div>
   );
 };
 
 const OptionDecorator=({category,selected}:{category:Category,selected:Category})=>{
-  console.log(category,selected)
     return (
       <a href={`/products/?category=${category}`} className={`${selected==category && "text-purple-500 rounded-md" } h-full flex-1
       px-3 flex

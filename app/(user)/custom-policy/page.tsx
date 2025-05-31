@@ -25,7 +25,7 @@ const categoryPre = z.enum([
 
 const ProductsPage = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const { isLoaded, isSignedIn, getToken } = useAuth();
+  const { isLoaded, isSignedIn, getToken,userId } = useAuth();
   const router = useRouter();
   const [policyList, setPolicyList] = useState<Policy[] | null>([]);
   const [token, setToken] = useState<string | null>(null);
@@ -37,7 +37,8 @@ const ProductsPage = () => {
           "Content-Type": "application/json",
         },
       });
-      setPolicyList(data.policiesWithRiders);
+      setPolicyList(data.policiesWithAddOns);
+      console.log(data.policiesWithAddOns)
     };
     if (token) {
       fetchCustomPolicies();
@@ -55,6 +56,17 @@ const ProductsPage = () => {
 
       const t = await getToken();
       setToken(t);
+      // const result=await axios.post("http://56.228.16.93:8000/api/v1/predict",{
+      //   age:45,
+      //   gender:"male",
+      //   bmi:28.5,
+      //   smoking:"no",
+      //   genetic_risk:"medium",
+      //   physical_activity:5.0,
+      //   alcohol_intake:8.0,
+      //   cancer_history:"no"
+      // })
+      // console.log(result)
     }
 
     checkAuthAndGetToken();
@@ -71,7 +83,7 @@ const ProductsPage = () => {
     <SelectedPolicyProvider>
       <div className="w-full h-[90%] flex bg-[linear-gradient(0deg,black,black,black,var(--primary),purple,rgb(90,0,90))]">
         <div className="flex-1 p-2 h-full bg-[linear-gradient(-135deg,black,black,var(--primary),rgb(90,0,90),purple)]">
-          <Assistant />
+          <Assistant userId={userId}/>
         </div>
         <div
           className="h-full flex w-min min-w-[1090px] bg-transparent flex-col overflow-y-scroll shadow-2xl z-30 shadow-black

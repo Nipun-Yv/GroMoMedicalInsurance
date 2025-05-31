@@ -167,7 +167,7 @@ export function GoogleFitForm() {
   return (
     <Card
       className="w-[55%] h-[90%] h-min min-h-min border-[0.5] border-purple-200 shadow-xl flex flex-col justify-center
-    bg-gray-50"
+    bg-gray-50 mt-[50px]"
     >
       <CardHeader>
         <CardTitle>Add product</CardTitle>

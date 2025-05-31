@@ -23,14 +23,19 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
     if (isOpen) {
       setSelectedPolicy(policy.name);
       setOpen(true);
-    } 
+    }
   };
   return (
     <div className="h-[425px] w-[490px] shadow-xl bg-gray-50 rounded-lg flex flex-col">
       <div className="h-[80%] w-full flex">
         <div className="w-[73%] h-full bg-white rounded-tl-lg rounded-br-lg shadow-md z-10">
           <div className="w-full h-[50%] overflow-y-scroll p-3 pt-4 pr-5">
-            <h3 className="text-gray-800 font-medium" onClick={()=>setOpen(false)}>{policy.name}</h3>
+            <h3
+              className="text-gray-800 font-medium"
+              onClick={() => setOpen(false)}
+            >
+              {policy.name}
+            </h3>
             <ul className="ml-4 flex flex-col gap-1 mt-3">
               {featureList.map((element, index) => {
                 if (index == 0) {
@@ -100,7 +105,7 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
           <div className="w-full aspect-square bg-white rounded-r-xl shadow-lg p-3 flex flex-col justify-center items-center">
             <Popover open={open} onOpenChange={handlePolicyDocumentSelection}>
               <PopoverTrigger className="relative w-full rounded-sm">
-                <img src={policy.image_url}/>
+                <img src={policy.image_url} />
               </PopoverTrigger>
 
               <PopoverContent
@@ -119,7 +124,7 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
                     fill="#ffffff"
                     color="#bbbbbb"
                     className="absolute -top-1 -right-1 w-[3] h-[3] bg-purple-300 rounded-full shadow-md"
-                    onClick={()=>setOpen(false)}
+                    onClick={() => setOpen(false)}
                   />
                   <iframe
                     src={policy.policy_document_url}
@@ -158,20 +163,16 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
       </div>
       <div className="flex flex-1 p-3 gap-2 bg-gray-50 rounded-xl">
         {/* max 2 */}
-        <div className="flex-1 rounded-md shadow-md border-1 h-full p-2 pt-1 flex flex-col overflow-y-scroll bg-white">
-          <h2 className="text-sm font-medium text-gray-400">OPD Care Silver</h2>
-          <p className="text-[9px] text-gray-400 font-extralight">
-            OPD Expenses for any pre-existing disease will be covered after 3
-            years Initial waiting period of 30 days is applicable.
-          </p>
-        </div>
-        <div className="flex-1 rounded-md shadow-md border-1 h-full p-2 pt-1 flex flex-col overflow-y-scroll bg-white">
-          <h2 className="text-sm font-medium text-gray-400">OPD Care Silver</h2>
-          <p className="text-[9px] text-gray-400 font-extralight">
-            OPD Expenses for any pre-existing disease will be covered after 3
-            years Initial waiting period of 30 days is applicable.
-          </p>
-        </div>
+        {policy.add_ons.map((element) => {
+          return (
+            <div key={element.id} className="flex-1 rounded-md shadow-md border-1 h-full p-2 pt-1 flex flex-col overflow-y-scroll bg-white">
+              <h2 className="text-sm font-medium text-gray-400">{element.name}</h2>
+              <p className="text-[9px] text-gray-400 font-extralight overflow-y-scroll h-[40px]">
+                {element.description}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

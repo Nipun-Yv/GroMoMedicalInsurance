@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
       <div
         className={`antialiased h-full w-full
-        bg-[url("/WhitePurpleBG.png")] bg-cover`}>
+        bg-[url("/WhitePurpleBG.png")] bg-cover `}>
         {/* <Navbar/> */}
         {children}
       </div>
