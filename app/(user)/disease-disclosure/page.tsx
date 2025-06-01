@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { Card } from "@/components/ui/card";
 
 const TickBox = ({
   field,
@@ -63,9 +64,9 @@ const FitnessEvalution = () => {
 
   if (!isLoaded || !isSignedIn || !token) {
     return (
-      <div className="w-[55%] h-[70%] mt-3 min-h-min border-[0.5] border-purple-200 shadow-xl flex items-center justify-center">
-        <Loader2 className="animate-spin" />
-      </div>
+      <Card className="w-[100vw] h-[100vh] min-h-min shadow-xl flex items-center justify-center">
+        <Loader2 className="animate-spin" size="36" />
+      </Card>
     );
   }
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;

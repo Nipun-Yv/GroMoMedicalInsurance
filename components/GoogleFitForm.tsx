@@ -17,6 +17,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -26,22 +34,22 @@ const ProductSchema = z.object({
   name: z.string(),
   step_count: z.coerce
     .number({
-  errorMap: () => ({ message: "Heart rate must be a number" }),
-})
+      errorMap: () => ({ message: "Step count must be a number" }),
+    })
     .min(0, "Please specify a step_count greater than or equal to 0"),
   heart_rate: z.coerce.number({
-  errorMap: () => ({ message: "Heart rate must be a number" }),
-}).min(0, "Please specify a valid heart rate"),
+    errorMap: () => ({ message: "Heart rate must be a number" }),
+  }).min(0, "Please specify a valid heart rate"),
   weight: z.coerce.number({
-  errorMap: () => ({ message: "Heart rate must be a number" }),
-}).min(0, "Please specify a valid weight"),
+    errorMap: () => ({ message: "Weight must be a number" }),
+  }).min(0, "Please specify a valid weight"),
   height: z.coerce.number({
-  errorMap: () => ({ message: "Heart rate must be a number" }),
-}).min(0, "Please specify a valid height"),
+    errorMap: () => ({ message: "Height must be a number" }),
+  }).min(0, "Please specify a valid height"),
   calories_expended: z.coerce
     .number({
-  errorMap: () => ({ message: "Heart rate must be a number" }),
-})
+      errorMap: () => ({ message: "Calories must be a number" }),
+    })
     .min(0, "Please specify a valid caloric expenditure"),
   distance_traveled: z.coerce.number().min(0, "Invalid distance data"),
 });
@@ -53,6 +61,7 @@ export function GoogleFitForm() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  
   const initiateTransfer = async () => {
     const SCOPES = [
       "https://www.googleapis.com/auth/fitness.activity.read",
@@ -74,6 +83,7 @@ export function GoogleFitForm() {
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
     window.location.href = authUrl;
   };
+
   const [loading, setLoading] = useState<boolean>(true);
   const {
     register,
@@ -82,12 +92,13 @@ export function GoogleFitForm() {
     handleSubmit,
     reset,
   } = useForm<Product>();
-  const submitForm= async (data: Product) => {
+
+  const submitForm = async (data: Product) => {
     try {
-      console.log(data)
+      console.log(data);
       await axios.post(
         `${baseUrl}/google-fit/submit-form`,
-        {...data},
+        { ...data },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -95,7 +106,7 @@ export function GoogleFitForm() {
           },
         }
       );
-      router.push("/disease-disclosure")
+      router.push("/health-details");
     } catch (err) {
       console.log(err);
       setError("root", {
@@ -104,6 +115,7 @@ export function GoogleFitForm() {
       });
     }
   };
+
   useEffect(() => {
     async function fetchFitnessData() {
       const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -123,12 +135,13 @@ export function GoogleFitForm() {
           },
         });
         reset({
+          name: "health-assessment",
           weight: fitness_data.weight.toFixed(),
           height: fitness_data.height.toFixed(),
-          calories_expended: fitness_data.calories_expended.toFixed(2),
+          calories_expended: parseInt(fitness_data.calories_expended.toFixed(2)),
           heart_rate: Math.floor(fitness_data.heart_rate),
           step_count: fitness_data.step_count,
-          distance_traveled: fitness_data.distance_traveled.toFixed(2),
+          distance_traveled: parseInt(fitness_data.distance_traveled.toFixed(2)),
         });
       } catch (err: any) {
         console.error("Unable to pre-fetch fitness data", err.message);
@@ -139,7 +152,7 @@ export function GoogleFitForm() {
     if (token) {
       fetchFitnessData();
     }
-  }, [token]);
+  }, [token, reset]);
 
   useEffect(() => {
     async function checkAuthAndGetToken() {
@@ -159,176 +172,194 @@ export function GoogleFitForm() {
 
   if (loading || !isLoaded || !isSignedIn || !token) {
     return (
-      <Card className="w-[55%] h-[70%] mt-3 min-h-min border-[0.5] border-purple-200 shadow-xl flex items-center justify-center">
-        <Loader2 className="animate-spin" />
-      </Card>
+      <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white">
+        <Card className="w-full max-w-md mx-auto shadow-xl border-0 p-8">
+          <div className="flex flex-col items-center space-y-4">
+            <Loader2 className="animate-spin text-blue-600" size="48" />
+            <p className="text-gray-600">Loading Google Fit data...</p>
+          </div>
+        </Card>
+      </div>
     );
   }
+
   return (
-    <Card
-      className="w-[55%] h-[90%] h-min min-h-min border-[0.5] border-purple-200 shadow-xl flex flex-col justify-center
-    bg-gray-50 mt-[50px]"
-    >
-      <CardHeader>
-        <CardTitle>Add product</CardTitle>
-        <CardDescription>
-          Add product details(file links will be regenerated and discarded after
-          temporary use)
-        </CardDescription>
-      </CardHeader>
-      <form
-        onSubmit={handleSubmit(submitForm)}
-        className="h-full flex flex-col justify-around gap-[45px]"
-      >
-        <CardContent>
-          <div className="flex w-full items-center gap-4">
-            <div className="flex-[1.5] flex flex-col gap-3 shadow-lg pr-5 pb-5 pl-5 rounded-xl pt-5">
-              {/* <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your name"
-                  {...register("name")}
-                  required
-                />
-                {errors.name && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.name.message}
-                  </p>
-                )}
-              </div> */}
-
-              <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="step-count">Step Count</Label>
-                <Input
-                  id="step-count"
-                  type="number"
-                  placeholder="Specify your average step count"
-                  {...register("step_count")}
-                  required
-                />
-                {errors.step_count && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.step_count.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="weight">Weight</Label>
-                <Input
-                  id="weight"
-                  type="text"
-                  placeholder="Specify your weight (in Kg)"
-                  {...register("weight")}
-                  required
-                />
-                {errors.weight && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.weight.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="height">Height</Label>
-                <Input
-                  id="height"
-                  type="text"
-                  placeholder="Specify your height (in metres)"
-                  {...register("height")}
-                  required
-                />
-                {errors.height && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.height.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="heart-rate">Heart Rate</Label>
-                <Input
-                  id="heart-rate"
-                  type="number"
-                  placeholder="Specify your heart rate (in BPM)"
-                  {...register("heart_rate")}
-                  required
-                />
-                {errors.heart_rate && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.heart_rate.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="calories-expended">Calories Exerted</Label>
-                <Input
-                  id="calories-expended"
-                  type="text"
-                  placeholder="Specify the average calories expended (on a daily basis)"
-                  {...register("calories_expended")}
-                  required
-                />
-                {errors.calories_expended && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.calories_expended.message}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-col space-y-1.5 gap-1">
-                <Label htmlFor="distance_traveled">Distance Traveled</Label>
-                <Input
-                  id="distance_traveled"
-                  type="text"
-                  placeholder="Specify the distance traveled on average(daily) in metres"
-                  {...register("distance_traveled")}
-                  required
-                />
-                {errors.distance_traveled && (
-                  <p className="text-red-500 -mt-3 text-sm">
-                    {errors.distance_traveled.message}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="flex-1 justify-center items-center p-2">
-              <div
-                className={`w-full bg-[url('/ProductIcon.webp')] bg-contain`}
-                onClick={initiateTransfer}
-              >
-                <img src="/GoogleFit.png" className="w-full" />
-              </div>
-              <p className="text-center font-extralight">
-                Import data from{" "}
-                <span className="text-purple-500">Google Fit</span>
-              </p>
-              {/* <div className="flex gap-3">
-                Import data from Google Fit
-              </div> */}
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter
-          className="flex justify-between
-        "
+    <div className="w-full bg-gradient-to-br from-gray-50 to-white px-4">
+      <Card className="w-full max-w-4xl mx-auto shadow-2xl border-0 overflow-hidden">
+        {/* Gradient Header */}
+        <div 
+          className="px-8 py-12 text-white rounded-t-xl"
+          style={{
+            background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 40%,rgb(71, 140, 225) 65%,#3b82f6 80%, #1e3a8a 100%)'
+          }}
         >
-          <Button variant="outline" type="reset">
-            Clear
+          <h1 className="text-4xl font-bold mb-2">Advanced Health Analytics</h1>
+          <p className="text-blue-100 text-lg">Comprehensive AI-powered health risk assessment platform</p>
+          
+          {/* Google Fit Integration Button */}
+          <Button 
+            onClick={initiateTransfer}
+            variant={"outline"}
+            className="mt-6 bg-transparent border-[0.5] hover:cursor-pointer"
+          >
+            <p className="text-extralight">Sync with Google Fit</p>
+    
           </Button>
-          <Button className="bg-black" type="submit" disabled={isSubmitting}>
-            Deploy
-          </Button>
-        </CardFooter>
-        {errors.root && (
-          <p className="text-red-500 text-center text-sm">
-            {errors.root.message}
-          </p>
-        )}
-      </form>
-    </Card>
+        </div>
+
+        <form onSubmit={handleSubmit(submitForm)} className="bg-white">
+          <CardContent className="p-8 space-y-8">
+            {/* Google Fit Data Section */}
+            <div className="space-y-6">
+              <div className="border-b border-gray-200 pb-2">
+                <h2 className="text-2xl font-semibold text-gray-800">Fitness Data</h2>
+                <p className="text-gray-600 text-sm">Data synced from Google Fit</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="step_count" className="text-sm font-medium text-gray-700">Step Count</Label>
+                  <Input
+                    id="step_count"
+                    type="number"
+                    placeholder="Daily steps"
+                    className="h-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    {...register("step_count")}
+                    required
+                  />
+                  {errors.step_count && (
+                    <p className="text-red-500 text-sm">{errors.step_count.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="heart_rate" className="text-sm font-medium text-gray-700">Heart Rate (bpm)</Label>
+                  <Input
+                    id="heart_rate"
+                    type="number"
+                    placeholder="Average heart rate"
+                    className="h-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    {...register("heart_rate")}
+                    required
+                  />
+                  {errors.heart_rate && (
+                    <p className="text-red-500 text-sm">{errors.heart_rate.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="calories_expended" className="text-sm font-medium text-gray-700">Calories Burned</Label>
+                  <Input
+                    id="calories_expended"
+                    type="number"
+                    placeholder="Daily calories"
+                    className="h-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    {...register("calories_expended")}
+                    required
+                  />
+                  {errors.calories_expended && (
+                    <p className="text-red-500 text-sm">{errors.calories_expended.message}</p>
+                  )}
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="weight" className="text-sm font-medium text-gray-700">Weight (kg)</Label>
+                  <Input
+                    id="weight"
+                    type="number"
+                    placeholder="Your weight"
+                    className="h-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    {...register("weight")}
+                    required
+                  />
+                  {errors.weight && (
+                    <p className="text-red-500 text-sm">{errors.weight.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="height" className="text-sm font-medium text-gray-700">Height (cm)</Label>
+                  <Input
+                    id="height"
+                    type="number"
+                    placeholder="Your height"
+                    className="h-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    {...register("height")}
+                    required
+                  />
+                  {errors.height && (
+                    <p className="text-red-500 text-sm">{errors.height.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="distance_traveled" className="text-sm font-medium text-gray-700">Distance (km)</Label>
+                  <Input
+                    id="distance_traveled"
+                    type="number"
+                    placeholder="Distance traveled"
+                    className="h-12 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    {...register("distance_traveled")}
+                    required
+                  />
+                  {errors.distance_traveled && (
+                    <p className="text-red-500 text-sm">{errors.distance_traveled.message}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Health History Section */}
+            <div className="space-y-6" hidden={true}>
+              <div className="border-b border-gray-200 pb-2">
+                <h2 className="text-2xl font-semibold text-gray-800">Health History</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6" hidden={true}>
+                <div className="flex items-center space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <Checkbox id="hypertension" className="data-[state=checked]:bg-blue-600" />
+                  <Label htmlFor="hypertension" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    Hypertension
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <Checkbox id="heart-disease" className="data-[state=checked]:bg-blue-600" />
+                  <Label htmlFor="heart-disease" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    Heart Disease
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-3 p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <Checkbox id="diabetes" className="data-[state=checked]:bg-blue-600" />
+                  <Label htmlFor="diabetes" className="text-sm font-medium text-gray-700 cursor-pointer">
+                    Diabetes
+                  </Label>
+                </div>
+              </div>
+            </div>
+
+            {/* Hidden name field to maintain form functionality */}
+            <Input {...register("name")} defaultValue="health-assessment" className="hidden" />
+          </CardContent>
+
+          <CardFooter className="px-8 py-6 bg-gray-50 border-t border-gray-200 flex justify-between">
+            <Button 
+              variant="outline" 
+              type="reset"
+              className="px-8 py-2 border-gray-300 text-gray-700 hover:bg-gray-100"
+            >
+              Clear
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="px-8 py-2 bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg"
+            >
+              {isSubmitting ? "Processing..." : "Submit Assessment"}
+            </Button>
+          </CardFooter>
+
+          {errors.root && (
+            <div className="px-8 py-4 bg-red-50 border-t border-red-200">
+              <p className="text-red-600 text-center text-sm">{errors.root.message}</p>
+            </div>
+          )}
+        </form>
+      </Card>
+    </div>
   );
 }

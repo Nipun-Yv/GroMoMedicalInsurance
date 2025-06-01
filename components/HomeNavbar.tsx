@@ -15,7 +15,7 @@ const Navbar= () => {
             
         </div>
         <div className="w-[9%] text-center text-lg font-extralight underline-offset-2">
-          <a href="/products">Products</a>
+          <a href="/fitness-index">Your Health</a>
             
         </div>
         <div className="w-[9%] text-center text-lg font-extralight underline-offset-2">

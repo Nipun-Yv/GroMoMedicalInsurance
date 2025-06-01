@@ -27,8 +27,12 @@ const ProductsPage = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { isLoaded, isSignedIn, getToken,userId } = useAuth();
   const router = useRouter();
-  const [policyList, setPolicyList] = useState<Policy[] | null>([]);
+  const [policyList, setPolicyList] = useState<Policy[]>([]);
   const [token, setToken] = useState<string | null>(null);
+  const [age,setAge]=useState<number|null>(null)
+  const [gender,setGender]=useState<string>("male")
+  const [diabetes_score,setDiabetes]=useState<number|null>()
+  const [cardiovascular_score,setCardiovascular]=useState<number|null>()
   useEffect(() => {
     const fetchCustomPolicies = async () => {
       const { data } = await axios.get(`${baseUrl}/policy/custom-policies`, {
@@ -38,7 +42,10 @@ const ProductsPage = () => {
         },
       });
       setPolicyList(data.policiesWithAddOns);
-      console.log(data.policiesWithAddOns)
+      setAge(data.age)
+      setGender(data.gender)
+      setCardiovascular(data.cardiovascular_score)
+      setDiabetes(data.diabetes_score)
     };
     if (token) {
       fetchCustomPolicies();
@@ -82,11 +89,11 @@ const ProductsPage = () => {
   return (
     <SelectedPolicyProvider>
       <div className="w-full h-[90%] flex bg-[linear-gradient(0deg,black,black,black,var(--primary),purple,rgb(90,0,90))]">
-        <div className="flex-1 p-2 h-full bg-[linear-gradient(-135deg,black,black,var(--primary),rgb(90,0,90),purple)]">
-          <Assistant userId={userId} policies={policyList}/>
+        <div className="flex-2 p-2 h-full bg-[linear-gradient(-135deg,black,black,var(--primary),rgb(90,0,90),purple)]">
+          <Assistant userId={userId} policies={policyList} age={age} gender={gender} cardiovascular_score={cardiovascular_score} diabetes_score={diabetes_score}/>
         </div>
         <div
-          className="h-full flex w-min min-w-[1090px] bg-transparent flex-col overflow-y-scroll shadow-2xl z-30 shadow-black
+          className="h-full flex-1 flex w-min min-w-[1090px] bg-transparent flex-col overflow-y-scroll shadow-2xl z-30 shadow-black
       "
         >
           <div className="bg-white w-full min-h-[70px] h-[70px] shadow-lg z-[60] flex items-center justify-center pl-5 gap-3">

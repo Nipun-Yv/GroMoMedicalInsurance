@@ -36,13 +36,15 @@ import { useSelectedPolicy } from "@/contexts/SelectedPolicyContext"
 import axios from "axios"
 import DiscountBox from "./DiscountBox"
 import { Policy } from "@/types/policy"
+import ReactMarkdown from 'react-markdown'
+
 
 type Message = {
   from: "user" | "bot"
   text: string
 }
 
-const SemanticSearch = ({userId,policies}:{userId:string,policies:Policy[]}) => {
+const SemanticSearch = ({userId,policies,age,gender,cardiovascular_score,diabetes_score}:{userId:string,policies:Policy[],cardiovascular_score:number,diabetes_score:number,age:string,gender:number}) => {
   const [description, setDescription] = useState<string>("")
   const [showDiscounts,setShowDiscounts]=useState<boolean>(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -61,7 +63,7 @@ const SemanticSearch = ({userId,policies}:{userId:string,policies:Policy[]}) => 
     setMessages((prev) => [...prev, { from: "user", text: description }])
     setDescription("")
     console.log(policies)
-    const {data}= await axios.post(`${baseUrl}/chat-message`,{user_id:userId,query:description,selected_pdf:selectedPolicy,policies_being_displayed_to_users:policies})
+    const {data}= await axios.post(`${baseUrl}/chat-message`,{user_id:userId,query:description,selected_pdf:selectedPolicy,policies_being_displayed_to_users:policies,cardiovascular_score,diabetes_score,age,gender})
     if(data.tool_used=="fetch_discounts"){
       // setMessages((prev) => [...prev, { from: "bot", text: data.message }])
       setShowDiscounts(true)
@@ -97,8 +99,11 @@ const SemanticSearch = ({userId,policies}:{userId:string,policies:Policy[]}) => 
             key={idx}
             className={`rounded-md w-full flex text-gray-200 ${msg.from === "user" ? "justify-end" : ""}`}
           >
-            <div className={`w-min-w max-w-[75%] p-3 border-[0.5] rounded-lg ${msg.from === "user" ? "justify-end" : ""}`}>
-              {msg.text}
+            
+            <div className={`w-min-w w-full p-3 border-[0.5] rounded-lg ${msg.from === "user" ? "justify-end" : ""}`}>
+              <ReactMarkdown>
+                {msg.text}
+              </ReactMarkdown>
             </div>
           </div>
         ))
