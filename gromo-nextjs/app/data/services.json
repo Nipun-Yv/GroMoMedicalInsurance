@@ -1,0 +1,22 @@
+[
+    {
+        "id":1,
+        "service_name":"Portfolio Website",
+        "img":"/ProfileIcon.png"
+    },
+    {
+        "id":2,
+        "service_name":"Component/ Template Library",
+        "img":"/ComponentIcon.png"
+    },
+    {
+        "id":3,
+        "service_name":"IOS/Android Application",
+        "img":"/PhoneIcon.png"
+    },
+    {
+        "id":4,
+        "service_name":"Enterprise Software",
+        "img":"/SoftwareIcon.png"
+    }
+]
