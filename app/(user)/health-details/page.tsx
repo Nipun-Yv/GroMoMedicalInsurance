@@ -672,7 +672,7 @@ export default function HealthPredictionForm() {
               Please consult with healthcare professionals for personalized medical advice.
             </p>
           </div>
-          <Button className="w-full mt-5 p-6" onClick={()=>{router.push()}}>View AI-Curated and Customised Policies</Button>
+          <Button className="w-full mt-5 p-6" onClick={()=>{router.push("/custom-policy")}}>View AI-Curated and Customised Policies</Button>
         </motion.div>
       </div>
     </div>

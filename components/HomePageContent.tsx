@@ -20,8 +20,9 @@ const HomePageContent = () => {
       <div className="flex-2 h-full ml-5 pb-3">
         <div className="h-[50%] mb-5 rounded-xl shadow-lg border-[0.8] bg-white p-5">
           <h2 className="scroll-m-20 pb-2 text-3xl font-extrabold tracking-tight first:mt-0 text-center p-3 text-gray-600">
-            Welcome to <span className="text-purple-400">GroMo Health -</span>
-            Your AI-Powered Health Companion
+            Welcome to <span className="text-purple-400">GroMo Health</span>
+            <br/>
+            <span className="font-extralight">AI Insurance that Matches Your Life, and Acts Instantly</span>
           </h2>
           <p className="text-gray-400 p-5">
 GroMo revolutionizes personal wellness by seamlessly integrating with your favorite fitness apps to instantly capture your health metrics. Our intelligent platform evaluates your data to generate a comprehensive health score, then crafts personalized wellness plans tailored specifically to you. With an AI assistant available 24/7, GroMo provides real-time guidance, motivation, and adjustments to help you achieve your health goals faster and more effectively than ever before.

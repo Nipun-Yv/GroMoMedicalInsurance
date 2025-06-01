@@ -275,7 +275,7 @@ export function GoogleFitForm() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="height" className="text-sm font-medium text-gray-700">Height (cm)</Label>
+                  <Label htmlFor="height" className="text-sm font-medium text-gray-700">Height (m)</Label>
                   <Input
                     id="height"
                     type="number"
@@ -289,7 +289,7 @@ export function GoogleFitForm() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="distance_traveled" className="text-sm font-medium text-gray-700">Distance (km)</Label>
+                  <Label htmlFor="distance_traveled" className="text-sm font-medium text-gray-700">Distance (m)</Label>
                   <Input
                     id="distance_traveled"
                     type="number"
