@@ -28,7 +28,7 @@ export default function HealthPredictionForm() {
     checkAuthAndGetToken();
   }, [isLoaded, isSignedIn, router, getToken]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     // Demographics
     age: "",
     gender: "",
@@ -57,11 +57,11 @@ export default function HealthPredictionForm() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState<any>(null);
   console.log(results)
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData((prev:any) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
