@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useRef} from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 
 export default function HealthPredictionForm() {
   const { isLoaded, isSignedIn, getToken } = useAuth();
+  const resultsRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
   useEffect(() => {
@@ -58,7 +59,12 @@ export default function HealthPredictionForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [results, setResults] = useState<any>(null);
-  console.log(results)
+    useEffect(() => {
+    if (resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [results]);
+
   const handleInputChange = (e:any) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev:any) => ({
@@ -441,6 +447,7 @@ export default function HealthPredictionForm() {
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8, ease: "easeOut" }}
     className="relative mt-12"
+    ref={resultsRef}
   >
     {/* Background Effects */}
     <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-white/20 to-purple-50/30 rounded-3xl"></div>
@@ -507,7 +514,7 @@ export default function HealthPredictionForm() {
                   
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-slate-600">Probability</span>
-                    <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
+                    <span className="text-sm font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
                       {/* {results.cardiovascular.risk_percentage?.toFixed(1)}% */}
                       Currently Unavailable
                     </span>
