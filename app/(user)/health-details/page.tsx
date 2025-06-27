@@ -474,7 +474,70 @@ export default function HealthPredictionForm() {
       {/* Results Grid */}
       <div className="p-8">
         <div className="grid md:grid-cols-3 gap-8">
-          
+          {/* Cardiovascular Risk Card */}
+          {results.cardiovascular && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="group relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+              <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-xl hover:shadow-2xl transition-all duration-500 group-hover:scale-105 min-h-[350px]">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </div>
+                  <span className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full">
+                    CARDIOVASCULAR
+                  </span>
+                </div>
+                
+                <h4 className="text-lg font-bold text-slate-800 mb-3">
+                  Heart Health Assessment
+                </h4>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-slate-600">Risk Level</span>
+                    <span className="font-semibold text-red-600">{results.cardiovascular.risk_level}</span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-slate-600">Probability</span>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
+                      {/* {results.cardiovascular.risk_percentage?.toFixed(1)}% */}
+                      Currently Unavailable
+                    </span>
+                  </div>
+                  
+                  {results.cardiovascular.bmi && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-600">BMI</span>
+                      <span className="font-medium text-slate-700">{results.cardiovascular.bmi}</span>
+                    </div>
+                  )}
+                  
+                  {results.cardiovascular.pulse_pressure && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-600">Pulse Pressure</span>
+                      <span className="font-medium text-slate-700">{results.cardiovascular.pulse_pressure} mmHg</span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="mt-4 h-2 bg-slate-200 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-red-500 to-pink-500 rounded-full transition-all duration-1000"
+                    style={{ width: `${Math.min(results.cardiovascular.risk_percentage || 0, 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Diabetes Risk Card */}
           {results.diabetes && (
             <motion.div
@@ -593,69 +656,6 @@ export default function HealthPredictionForm() {
             </motion.div>
           )}
         </div>
-          {/* Cardiovascular Risk Card */}
-          {results.cardiovascular && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="group relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-              <div className="relative bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-red-200/50 shadow-xl hover:shadow-2xl transition-all duration-500 group-hover:scale-105 min-h-[350px]">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </div>
-                  <span className="text-xs font-semibold text-red-600 bg-red-100 px-3 py-1 rounded-full">
-                    CARDIOVASCULAR
-                  </span>
-                </div>
-                
-                <h4 className="text-lg font-bold text-slate-800 mb-3">
-                  Heart Health Assessment
-                </h4>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-600">Risk Level</span>
-                    <span className="font-semibold text-red-600">{results.cardiovascular.risk_level}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-600">Probability</span>
-                    <span className="text-2xl font-bold bg-gradient-to-r from-red-600 to-pink-600 bg-clip-text text-transparent">
-                      {/* {results.cardiovascular.risk_percentage?.toFixed(1)}% */}
-                      Currently Unavailable
-                    </span>
-                  </div>
-                  
-                  {results.cardiovascular.bmi && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-600">BMI</span>
-                      <span className="font-medium text-slate-700">{results.cardiovascular.bmi}</span>
-                    </div>
-                  )}
-                  
-                  {results.cardiovascular.pulse_pressure && (
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-600">Pulse Pressure</span>
-                      <span className="font-medium text-slate-700">{results.cardiovascular.pulse_pressure} mmHg</span>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="mt-4 h-2 bg-slate-200 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-red-500 to-pink-500 rounded-full transition-all duration-1000"
-                    style={{ width: `${Math.min(results.cardiovascular.risk_percentage || 0, 100)}%` }}
-                  ></div>
-                </div>
-              </div>
-            </motion.div>
-          )}
 
         {/* Summary Section */}
         <motion.div
