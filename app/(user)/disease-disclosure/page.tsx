@@ -107,7 +107,7 @@ const FitnessEvalution = () => {
           <TickBox field="Other disease" setDiseaseList={setDiseaseList} />
           <div
             className={`flex-1 h-[21%] min-w-[180px] rounded-md pl-3 flex text-gray-400
-items-center flex gap-2`}
+items-center gap-2`}
           >
             <p className="text-[11px]">Disclose pre-existing diseases to get better recommendations</p>
           </div>

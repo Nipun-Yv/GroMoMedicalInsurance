@@ -17,7 +17,7 @@ const NavbarRest = () => {
           <a href="/home">Home</a>
         </div>
         <div className=" text-center text-md font-extralight underline-offset-2">
-          <a href="/products">Products</a>
+          <a href="/fitness-index">You Health</a>
         </div>
         <div className="text-center text-md font-extralight underline-offset-2">
           <a href="/about-us">About Us</a>
