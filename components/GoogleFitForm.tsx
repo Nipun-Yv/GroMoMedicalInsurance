@@ -176,7 +176,7 @@ export function GoogleFitForm() {
         <Card className="w-full max-w-md mx-auto shadow-xl border-0 p-8">
           <div className="flex flex-col items-center space-y-4">
             <Loader2 className="animate-spin text-blue-600" size="48" />
-            <p className="text-gray-600">Loading Google Fit data...</p>
+            <p className="text-gray-600">Loading Your Fitness Form...</p>
           </div>
         </Card>
       </div>
