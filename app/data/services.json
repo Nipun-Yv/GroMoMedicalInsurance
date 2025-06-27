@@ -1,22 +1,22 @@
 [
     {
         "id":1,
-        "service_name":"Portfolio Website",
+        "service_name":"Personalized Recommendations",
         "img":"/ProfileIcon.png"
     },
     {
         "id":2,
-        "service_name":"Component/ Template Library",
+        "service_name":"Policy Summarisation",
         "img":"/ComponentIcon.png"
     },
     {
         "id":3,
-        "service_name":"IOS/Android Application",
+        "service_name":"Sync with Google Fit",
         "img":"/PhoneIcon.png"
     },
     {
         "id":4,
-        "service_name":"Enterprise Software",
+        "service_name":"Virtual Assistant",
         "img":"/SoftwareIcon.png"
     }
 ]
