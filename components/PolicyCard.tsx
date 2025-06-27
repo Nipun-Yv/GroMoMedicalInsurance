@@ -93,7 +93,7 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
                 className="w-full h-[65%] border-purple-300 text-purple-400 hover:cursor-pointer hover:bg-purple-300 hover:text-white"
                 variant="outline"
               >
-                Customise Plan
+                Purchase Plan
               </Button>
               <p className="text-purple-300 text-[13px] text-center mt-2">
                 Applicable for 5% direct discount
@@ -106,6 +106,7 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
             <Popover open={open} onOpenChange={handlePolicyDocumentSelection}>
               <PopoverTrigger className="relative w-full rounded-sm">
                 <img src={policy.image_url} />
+                <span className="text-xs font-extralight text-purple-500">Open Policy PDF</span>
               </PopoverTrigger>
 
               <PopoverContent
@@ -162,7 +163,6 @@ const PolicyCard = ({ policy, index }: { policy: Policy; index: number }) => {
         </div>
       </div>
       <div className="flex flex-1 p-3 gap-2 bg-gray-50 rounded-xl">
-        {/* max 2 */}
         {policy.add_ons.map((element) => {
           return (
             <div key={element.id} className="flex-1 rounded-md shadow-md border-1 h-full p-2 pt-1 flex flex-col overflow-y-scroll bg-white">

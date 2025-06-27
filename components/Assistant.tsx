@@ -90,6 +90,7 @@ const SemanticSearch = ({userId,policies,age,gender,cardiovascular_score,diabete
         <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight text-white border-gray-500 pb-5 p-3 h-full flex flex-col justify-center ">
           <span className="text-purple-300"> I'm Aura</span>
           Ask me about policy docs, add-ons and anything that comes to mind!
+          <span className="text-xs font-medium text-purple-300 mt-4">Select a policy doc to ask me about policy details</span>
         </h1>
         )
         :
